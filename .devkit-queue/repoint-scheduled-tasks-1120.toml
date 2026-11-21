@@ -1,0 +1,38 @@
+# The three scheduled tasks on DESKTOP-ML5F3PJ still run the copies under
+# C:\Users\alexa\Scripts, which are not in any repo. This change moved them into
+# host-scripts' windows/; the tasks must be pointed at the static checkout's copies.
+# Both D2R tasks refused `Enable-ScheduledTask` from an unelevated session on 2026-11-20
+# ("Access is denied"), and Hardware Health Check runs elevated, so expect to need admin.
+when = "merged"
+on = "desktop-ml5f3pj"
+agent = """
+On this PC, point three Windows scheduled tasks at host-scripts' own copies of their
+scripts, in the static checkout C:\\Users\\alexa\\vs-code\\host-scripts\\windows\\:
+
+| Task (root folder) | Script it must run |
+| --- | --- |
+| D2R Disconnect Guard | windows\\d2r-disconnect-guard.ps1 |
+| D2R Net Logger | windows\\d2r-netlog.ps1 |
+| Hardware Health Check | windows\\hardware-health.ps1 |
+
+First confirm the static checkout is on main and holds those three files; if not, it has
+not been fast-forwarded yet, so queue a fresh task with this same text and stop.
+
+For each task, read its current action with `Get-ScheduledTask`, and keep everything
+about it except the script path: executable, other arguments (`-NoProfile -WindowStyle
+Hidden -ExecutionPolicy Bypass` for the D2R ones; read Hardware Health Check's, which
+runs through conhost.exe), triggers, principal and run level. Replace only the `-File`
+path, with `Set-ScheduledTask -Action`. Then make sure each task is enabled.
+
+The D2R tasks were registered elevated and refuse changes from an unelevated session
+("Access is denied"). Try unelevated first. For whatever is refused, write one
+PowerShell command that does the remaining repoint-and-enable, and hand it to the person
+as a step to run in an admin PowerShell, the harness's way (`harness_triage.PERSON_STEP`).
+Do not retry it in a loop.
+
+Leave C:\\Users\\alexa\\Scripts alone apart from the three .ps1 files, which you may
+delete once every task runs the checkout's copy: the old logs there are history.
+
+Finished is all three tasks enabled and running the checkout's scripts, as
+`Get-ScheduledTask` shows, or the one admin command filed for the person.
+"""

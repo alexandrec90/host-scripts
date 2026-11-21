@@ -75,3 +75,8 @@ Baseline guardrails — including the instruction-file feedback loop (**never si
 work around a bad instruction**) — are in `.claude/rules/engineering.md`. Rules for
 writing skills and rules themselves are in `.claude/rules/authoring.md`. Cross-reference
 this project's own scoped rules here, one line each.
+
+- **`windows/` is PowerShell, run by this PC's scheduled tasks** from the static checkout.
+  Each header says why it cannot be Python. Every log goes to `logs/`, never beside the
+  script, or the checkout goes dirty and stops fast-forwarding;
+  `tests/test_windows_scripts.py` holds both, and that each script parses.
