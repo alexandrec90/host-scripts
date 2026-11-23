@@ -80,3 +80,8 @@ this project's own scoped rules here, one line each.
   Each header says why it cannot be Python. Every log goes to `logs/`, never beside the
   script, or the checkout goes dirty and stops fast-forwarding;
   `tests/test_windows_scripts.py` holds both, and that each script parses.
+- **A scheduled task never shows a window.** Its action is
+  `conhost.exe --headless powershell.exe ... -File <script>`, not bare `powershell.exe`:
+  Windows Terminal is this PC's default terminal, and it shows a window before
+  `-WindowStyle Hidden` can hide it. Changing a task's action needs an elevated shell.
+  Each script's header states the launch line, and the same test holds that.

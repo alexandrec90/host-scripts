@@ -6,6 +6,8 @@
 # PowerShell, not Python: a Windows-host tool with no other OS to run on, and the
 # 200 ms reaction time is the whole point -- kept exactly as it ran from ~/Scripts.
 # Runs from the "D2R Disconnect Guard" scheduled task.
+# The task starts it as `conhost.exe --headless powershell.exe ...`: with Windows Terminal as
+# the default terminal, `-WindowStyle Hidden` alone still opens a visible window.
 
 $logPath  = 'C:\Program Files\Sunshine\config\sunshine.log'
 $logDir   = Join-Path $PSScriptRoot '..\logs'
