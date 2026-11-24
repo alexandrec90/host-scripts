@@ -1,6 +1,8 @@
 # Hourly hardware health check for an always-on PC.
 # Logs CPU/GPU/SSD temperature, CPU fan speed and SSD health; raises a toast only when something is wrong.
 # Runs from the "Hardware Health Check" scheduled task (elevated: SSD counters need admin).
+# The task starts it as `conhost.exe --headless powershell.exe ...`: with Windows Terminal as
+# the default terminal, `-WindowStyle Hidden` alone still opens a visible window.
 #
 # PowerShell, not Python: LibreHardwareMonitorLib is a .NET assembly, the storage
 # reliability counters are a CIM cmdlet, and the toast is WinRT -- none reachable from

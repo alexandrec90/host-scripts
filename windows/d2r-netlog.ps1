@@ -9,6 +9,8 @@
 # PowerShell, not Python: performance counters, Get-NetTCPConnection and
 # Get-NetUDPEndpoint are Windows APIs the standard library has no reach into.
 # Runs from the "D2R Net Logger" scheduled task.
+# The task starts it as `conhost.exe --headless powershell.exe ...`: with Windows Terminal as
+# the default terminal, `-WindowStyle Hidden` alone still opens a visible window.
 
 $outDir = Join-Path $PSScriptRoot '..\logs\d2r-netlog'
 New-Item -ItemType Directory -Force $outDir | Out-Null

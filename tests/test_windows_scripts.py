@@ -64,3 +64,15 @@ def test_each_script_writes_only_under_logs(script):
     for line in text.splitlines():
         if "Join-Path $PSScriptRoot" in line:
             assert "..\\logs" in line, f"a path beside the script: {line.strip()}"
+
+
+@pytest.mark.parametrize("script", SCRIPTS, ids=lambda p: p.name)
+def test_each_header_states_the_headless_launch(script):
+    # The task's action lives in the scheduler, not in this repo, so the header is the
+    # only record of it: a bare `powershell.exe` action shows a window at every logon.
+    header = []
+    for line in script.read_text(encoding="utf-8").splitlines():
+        if not line.startswith("#"):
+            break
+        header.append(line)
+    assert "conhost.exe --headless powershell.exe" in " ".join(header)
