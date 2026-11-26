@@ -120,13 +120,11 @@ enabled = false
 
 # The Windows scheduled tasks this project owns, by their scheduler names. Devkit's fix
 # pass judges them beside its own jobs and files a failure here. Each runs one script
-# under `windows/`: `d2r-disconnect-guard.ps1`, `d2r-netlog.ps1`, `dell-idle-blank.ps1`,
-# `hardware-health.ps1`.
+# under `windows/`: `d2r-disconnect-guard.ps1`, `d2r-netlog.ps1`, `hardware-health.ps1`.
 [schedule]
 tasks = [
     "D2R Disconnect Guard",
     "D2R Net Logger",
-    "Dell Idle Blank",
     "Hardware Health Check",
 ]
 

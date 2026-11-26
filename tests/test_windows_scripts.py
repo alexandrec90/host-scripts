@@ -19,12 +19,7 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPTS = sorted((ROOT / "windows").glob("*.ps1"))
-EXPECTED = {
-    "d2r-disconnect-guard.ps1",
-    "d2r-netlog.ps1",
-    "dell-idle-blank.ps1",
-    "hardware-health.ps1",
-}
+EXPECTED = {"d2r-disconnect-guard.ps1", "d2r-netlog.ps1", "hardware-health.ps1"}
 
 PARSE = (
     "$errors = $null; "

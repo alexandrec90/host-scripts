@@ -1,6 +1,6 @@
 # Host Scripts
 
-Host-level scheduled scripts for this workstation: D2R stream guard, D2R net logger, Dell idle blank, hardware health check
+Host-level scheduled scripts for this workstation: D2R stream guard, D2R net logger, hardware health check
 
 ## Tech Stack
 
