@@ -1,6 +1,6 @@
 # Host Scripts
 
-Host-level scheduled scripts for this workstation: D2R stream guard, D2R net logger, hardware health check
+Host-level scheduled scripts for this workstation: D2R stream guard, D2R net logger, Dell idle blank, hardware health check
 
 Generated from [devkit](https://github.com/alexandrec90/devkit)'s project
 template. The agent harness in `scripts/hooks/` is vendored from there — see
