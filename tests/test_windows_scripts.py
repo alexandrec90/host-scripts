@@ -12,13 +12,19 @@ import os
 import re
 import shutil
 import subprocess
+import tomllib
 from pathlib import Path
 
 import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPTS = sorted((ROOT / "windows").glob("*.ps1"))
-EXPECTED = {"d2r-disconnect-guard.ps1", "d2r-netlog.ps1", "hardware-health.ps1"}
+EXPECTED = {
+    "d2r-disconnect-guard.ps1",
+    "d2r-netlog.ps1",
+    "dell-idle-blank.ps1",
+    "hardware-health.ps1",
+}
 
 PARSE = (
     "$errors = $null; "
@@ -76,3 +82,25 @@ def test_each_header_states_the_headless_launch(script):
             break
         header.append(line)
     assert "conhost.exe --headless powershell.exe" in " ".join(header)
+
+
+TASK_NAMED = re.compile(r'^# Runs from the "([^"]+)" scheduled task', re.MULTILINE)
+
+
+def _claimed_tasks() -> set[str]:
+    with (ROOT / ".devkit.toml").open("rb") as fh:
+        return set(tomllib.load(fh)["schedule"]["tasks"])
+
+
+@pytest.mark.parametrize("script", SCRIPTS, ids=lambda p: p.name)
+def test_each_scripts_task_is_claimed(script):
+    # devkit's fix pass files any hand-made task no project claims as
+    # `scheduled-job-unowned`; "Dell Idle Blank" was, before it was claimed here.
+    found = TASK_NAMED.search(script.read_text(encoding="utf-8"))
+    assert found, 'its header names its task: # Runs from the "<name>" scheduled task'
+    assert found.group(1) in _claimed_tasks(), "claim it in .devkit.toml [schedule] tasks"
+
+
+def test_every_claimed_task_has_its_script():
+    named = {m.group(1) for p in SCRIPTS for m in TASK_NAMED.finditer(p.read_text("utf-8"))}
+    assert _claimed_tasks() == named

@@ -1,7 +1,7 @@
 [project]
 name = "host-scripts"
 version = "0.1.0"
-description = "Host-level scheduled scripts for this workstation: D2R stream guard, D2R net logger, hardware health check"
+description = "Host-level scheduled scripts for this workstation: D2R stream guard, D2R net logger, Dell idle blank, hardware health check"
 requires-python = ">=3.12"
 dependencies = [
   "pydantic-settings>=2.4",
